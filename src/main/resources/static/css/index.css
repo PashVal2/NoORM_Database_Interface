@@ -1,0 +1,108 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between
+}
+
+.container {
+    height: 100%;
+/*    display: grid;*/
+/*    grid-template-rows: repeat(2, auto);  *//* Создаём 3 равных столбца */
+/*    grid-gap: 20px;  *//* Расстояние между элементами */
+/*    padding: 20px 0px 0px 0;  *//* Отступы от края контейнера */
+}
+
+/* Header Styles */
+header {
+    top: 0px;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    position: fixed;
+}
+
+header nav {
+    display: flex; /* Включаем Flexbox */
+    justify-content: space-between; /* Распределяем элементы с промежутками между ними */
+    align-items: center; /* Центрируем элементы по вертикали */
+    padding: 10px 20px; /* Отступы по бокам и сверху/снизу */
+}
+
+header nav box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+header nav ul {
+    list-style-type: none;
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    display: inline;
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: color 0.3s;
+}
+
+header nav ul li a:hover {
+    color: #3498db;
+}
+
+/* Main Section Styles */
+main {
+    padding: 40px 20px;
+    text-align: center;
+/*    grid-row: 1 / 2;*/
+}
+
+main h1 {
+    font-size: 36px;
+    color: #2c3e50;
+    margin-bottom: 10px;
+}
+
+.textNorm {
+    font-size: 18px;
+    line-height: 1.6;
+    color: #7f8c8d;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+/*    grid-row: 3 / 4;*/
+    top: 100%;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+}
+
+footer p {
+    margin: 0;
+}
+
+#arrow {
+    width: 15px;
+    height: auto;
+}

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/dropMenu.css">
+    <link rel="stylesheet" href="/css/review.css">
+    <link rel="stylesheet" href="/css/reg.css">
+    <title>Отзывы</title>
+</head>
+<body>
+<header>
+    <nav>
+        <box>
+            <ul>
+                <li><a href="/">Доставка еды</a></li>
+                <li><a href="/cart">Корзина</a></li>
+                <li><a href="/order">Табло заказов</a></li>
+            </ul>
+        </box>
+        <box>
+            <ul>
+                <li th:if="${not showLogout}">
+                    <a href="/login">Войти</a>
+                </li>
+                <li class="dropdown" th:if="${showLogout}">
+                    <a href="javascript:void(0);" class="dropdown-toggle">
+                        <p th:text="${name}"/>
+                        <img src="/icon/iconsArrow.png" alt="arrow" id="arrow">
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/login">Сменить аккаунт</a>
+                        <a th:if="${ADMIN}" href="/emp">Работники</a>
+                        <a href="/logout">Выйти</a>
+                    </div>
+                </li>
+            </ul>
+        </box>
+    </nav>
+</header>
+<main>
+    <h1>Отзывы</h1>
+    <section th:if="${showLogout}" id="home">
+        <form action="/makeReview" method="post">
+            <div class="form-group">
+                <label for="description">Описание:</label>
+                <textarea id="description" name="comment" placeholder="Ваш отзыв" rows="4" maxlength="255" required></textarea>
+            </div>
+            <button type="submit">Добавить</button>
+        </form>
+    </section>
+    <div class="reviews-container">
+
+    </div>
+</main>
+<footer class="container">
+    <p>&copy; 2024 Онлайн доставка</p>
+</footer>
+</body>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const isAdmin = [[${ADMIN}]];
+    /*]]>*/
+</script>
+<script src="/js/menu.js"></script>
+<script src="/js/review.js"></script>
+</html>

@@ -1,0 +1,21 @@
+* {
+    scroll-behavior: smooth;
+}
+body {
+    margin: 0;
+    background-color: rgb(255, 255, 255);
+    min-height: 100vh;
+}
+table {
+    width: 100%;
+}
+table, th, td {
+    border: 1px solid #ddd;
+}
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+th {
+    background-color: #f4f4f4;
+}

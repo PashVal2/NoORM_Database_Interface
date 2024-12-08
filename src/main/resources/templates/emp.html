@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/dropMenu.css">
+    <link rel="stylesheet" href="/css/reg.css">
+    <title>Сотрудники</title>
+</head>
+<body>
+<header>
+    <nav>
+        <box>
+            <ul>
+                <li><a href="/">Доставка еды</a></li>
+                <li><a href="/cart">Корзина</a></li>
+                <li><a href="/order">Табло заказов</a></li>
+                <a href="/review">Отзывы</a></li>
+            </ul>
+        </box>
+        <box>
+            <ul>
+                <li th:if="${not showLogout}">
+                    <a href="/login">Войти</a>
+                </li>
+                <li class="dropdown" th:if="${showLogout}">
+                    <a href="javascript:void(0);" class="dropdown-toggle">
+                        <p th:text="${name}"/>
+                        <img src="/icon/iconsArrow.png" alt="arrow" id="arrow">
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/login">Сменить аккаунт</a>
+                        <a th:if="${ADMIN}" href="/emp">Работники</a>
+                        <a href="/logout">Выйти</a>
+                    </div>
+                </li>
+            </ul>
+        </box>
+    </nav>
+</header>
+<main>
+    <section id="home">
+        <form action="/filter" method="get">
+            <div class="form-group">
+                <label for="minYears">Стаж от:</label>
+                <input type="number" id="minYears" name="minYears" min="0">
+            </div>
+            <div class="form-group">
+                <label for="specialization">Специализация:</label>
+                <input type="text" id="specialization" name="specialization">
+            </div>
+            <button type="submit">Фильтровать</button>
+        </form>
+    </section>
+    <table border="1">
+        <thead>
+        <tr>
+        <tr>
+            <th>ID</th>
+            <th>ФИО</th>
+            <th>Дата</th>
+            <th>Стаж</th>
+            <th>Специализация</th>
+        </tr>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="emp : ${emps}">
+            <td th:text="${emp.employee_id}">ID</td>
+            <td th:text="${emp.employee_full_name}">ФИО</td>
+            <td th:text="${emp.employee_date}">Дата</td>
+            <td th:text="${emp.years}">Стаж</td>
+            <td th:text="${emp.specialization}">Специализация</td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<footer class="container">
+    <p>&copy; 2024 Онлайн доставка</p>
+</footer>
+</body>
+<script src="/js/menu.js"></script>
+</html>

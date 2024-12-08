@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/dropMenu.css">
+    <link rel="stylesheet" href="/css/reg.css">
+
+    <title>Заказ</title>
+</head>
+<body>
+<header>
+    <nav>
+        <box>
+            <ul>
+                <li><a href="/">Доставка еды</a></li>
+                <li><a href="/cart">Корзина</a></li>
+                <a href="/review">Отзывы</a></li>
+            </ul>
+        </box>
+        <box>
+            <ul>
+                <li th:if="${not showLogout}">
+                    <a href="/login">Войти</a>
+                </li>
+                <li class="dropdown" th:if="${showLogout}">
+                    <a href="javascript:void(0);" class="dropdown-toggle">
+                        <p th:text="${name}"/>
+                        <img src="/icon/iconsArrow.png" alt="arrow" id="arrow">
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="/login">Сменить аккаунт</a>
+                        <a th:if="${ADMIN}" href="/emp">Работники</a>
+                        <a href="/logout">Выйти</a>
+                    </div>
+                </li>
+            </ul>
+        </box>
+    </nav>
+</header>
+<main>
+    <h1>Заказы</h1>
+    <section th:if="${ADMIN}" id="home">
+        <form action="/changeStatus" method="post">
+            <div class="form-group">
+                <label for="username">ID заказа:</label>
+                <input type="number" id="username" name="orderId" placeholder="ID заказа" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Новый статус:</label>
+                <input type="text" id="password" name="status" placeholder="Новый статус" required>
+            </div>
+            <button type="submit">Изменить</button>
+        </form>
+    </section>
+    <table border="1">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Статус</th>
+            <th th:if="${ADMIN}">Цена</th>
+            <th>Курьер</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.order_id}"></td>
+            <td th:text="${order.order_state}"></td>
+            <td th:if="${ADMIN}" th:text="${order.order_total_amount}"></td>
+            <td th:if="${ADMIN}" th:text="${order.address}"></td>
+            <td th:text="${order.empName}"></td>
+        </tr>
+        </tbody>
+    </table>
+</main>
+<footer class="container">
+    <p>&copy; 2024 Онлайн доставка</p>
+</footer>
+</body>
+<script src="/js/menu.js"></script>
+</html>
