@@ -60,6 +60,12 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/")
                         .permitAll()
                 )
+                .exceptionHandling(exception ->
+                        exception.accessDeniedPage("/accessDenied")
+                )
+                .exceptionHandling(exception ->
+                        exception.accessDeniedPage("/error")
+                )
                 .authenticationProvider(authenticationProvider());
         return http.build();
     }

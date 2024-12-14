@@ -1,6 +1,10 @@
 package org.example;
 
 import org.example.job.SQLrequest;
+import org.example.service.ClientService;
+import org.example.service.EmpService;
+import org.example.service.OrderService;
+import org.example.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -21,10 +25,13 @@ import static org.example.job.checker.isAuth;
 @Controller
 public class MyPostControlleer {
     @Autowired
-    private final SQLrequest sqLrequest;
-    public MyPostControlleer(SQLrequest sqLrequest) {
-        this.sqLrequest = sqLrequest;
-    }
+    private ReviewService reviewService;
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private EmpService empService;
+    @Autowired
+    private OrderService orderService;
     @PostMapping("/register")
     public String postRegisterPage(Model model, Authentication authentication,
            @RequestParam String username, @RequestParam String password,
@@ -38,7 +45,7 @@ public class MyPostControlleer {
             return "register";
         }
         try {
-            sqLrequest.putNewClient(username, password);
+            clientService.putNewClient(username, password);
             return "redirect:/login";
         }
         catch (Exception e) {
@@ -51,12 +58,10 @@ public class MyPostControlleer {
             @RequestParam("action") String action) {
         HttpSession session = request.getSession();
         Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
-
         if (cart == null) {
             cart = new HashMap<>();
             session.setAttribute("cart", cart);
         }
-
         if (cart.containsKey(dishId)) {
             int count = cart.get(dishId);
             System.out.println(count);
@@ -76,49 +81,28 @@ public class MyPostControlleer {
         else if (!action.equals("dec")){
             cart.put(dishId, 1);
         }
-
         return "redirect:/"; // Возврат на страницу меню
     }
     @PostMapping("/makeAnOrder")
     public String postMakeAnOrder(@RequestParam String address, Authentication authentication, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Map<Integer, Integer> cart = (Map<Integer, Integer>) session.getAttribute("cart");
-        sqLrequest.addNewOrder(cart, address, authentication);
+        orderService.addNewOrder(cart, address, authentication);
         session.removeAttribute("cart");
         return "redirect:/";
     }
-    @GetMapping("/filter")
-    public String getEmpPage(@RequestParam String specialization, @RequestParam int minYears,
-                             Model model, Authentication authentication) {
-        List emps = sqLrequest.getEmpWithFilter(minYears, specialization);
-        model.addAttribute("ADMIN", isAdmin(authentication));
-        model.addAttribute("showLogout", isAuth(authentication));
-        model.addAttribute("emps", emps);
-        if(isAuth(authentication)) {
-            model.addAttribute("name", authentication.getName());
-        }
-        return "emp";
-    }
+
     @PostMapping("/changeStatus")
     public String changeOrderStatus(
             @RequestParam("orderId") Long orderId,
             @RequestParam("status") String status) {
-        sqLrequest.updateOrderStatus(orderId, status);
+        orderService.updateOrderStatus(orderId, status);
         return "redirect:/order";
     }
     @PostMapping("/makeReview")
     public String makeReview(
             @RequestParam String comment, Authentication authentication) {
-        sqLrequest.makeComment(comment, authentication);
+        reviewService.makeComment(comment, authentication);
         return "redirect:/review";
-    }
-    @GetMapping("/review")
-    public String reviewsPage(Model model, Authentication authentication) {
-        model.addAttribute("ADMIN", isAdmin(authentication));
-        model.addAttribute("showLogout", isAuth(authentication));
-        if(isAuth(authentication)) {
-            model.addAttribute("name", authentication.getName());
-        }
-        return "review";
     }
 }

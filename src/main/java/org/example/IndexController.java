@@ -1,11 +1,13 @@
 package org.example;
 
 import org.example.job.SQLrequest;
+import org.example.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -17,13 +19,18 @@ import static org.example.job.checker.isAuth;
 @Controller
 public class IndexController {
     @Autowired
-    private final SQLrequest sqLrequest;
-    public IndexController(SQLrequest sqLrequest) {
-        this.sqLrequest = sqLrequest;
-    }
+    private ReviewService reviewService;
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private EmpService empService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private DishService dishService;
     @GetMapping("/")
     public String getIndexPage(Model model, Authentication authentication, HttpServletRequest request) {
-        List<Map<String, Object>> dishes = sqLrequest.getDish("dish_id is not null", true);
+        List<Map<String, Object>> dishes = dishService.getDish("dish_id is not null", true);
         model.addAttribute("showLogout", isAuth(authentication));
         model.addAttribute("ADMIN", isAdmin(authentication));
         model.addAttribute("dishes", dishes);
@@ -42,7 +49,7 @@ public class IndexController {
 
     @GetMapping("/order")
     public String getOrderPage(Model model, Authentication authentication) {
-        List orders = sqLrequest.getForOrderPage("order_id is not null");
+        List orders = orderService.getForOrderPage("order_id is not null");
         model.addAttribute("ADMIN", isAdmin(authentication));
         model.addAttribute("showLogout", isAuth(authentication));
         model.addAttribute("orders", orders);
@@ -53,7 +60,8 @@ public class IndexController {
     }
     @GetMapping("/emp")
     public String getEmpPage(Model model, Authentication authentication) {
-        List emps = sqLrequest.getEmp();
+
+        List emps = empService.getEmp();
         model.addAttribute("ADMIN", isAdmin(authentication));
         model.addAttribute("showLogout", isAuth(authentication));
         model.addAttribute("emps", emps);
@@ -107,11 +115,31 @@ public class IndexController {
         }
         condition.append(")");
 
-        List<Map<String, Object>> dishes = sqLrequest.getDish(condition.toString(), false);
+        List<Map<String, Object>> dishes = dishService.getDish(condition.toString(), false);
         model.addAttribute("dishes", dishes);
         model.addAttribute("cart", cart);
         return "cart";
     }
-
+    @GetMapping("/review")
+    public String reviewsPage(Model model, Authentication authentication) {
+        model.addAttribute("ADMIN", isAdmin(authentication));
+        model.addAttribute("showLogout", isAuth(authentication));
+        if(isAuth(authentication)) {
+            model.addAttribute("name", authentication.getName());
+        }
+        return "review";
+    }
+    @GetMapping("/filter")
+    public String getEmpPage(@RequestParam String specialization, @RequestParam int minYears,
+                             Model model, Authentication authentication) {
+        List emps = empService.getEmpWithFilter(minYears, specialization);
+        model.addAttribute("ADMIN", isAdmin(authentication));
+        model.addAttribute("showLogout", isAuth(authentication));
+        model.addAttribute("emps", emps);
+        if(isAuth(authentication)) {
+            model.addAttribute("name", authentication.getName());
+        }
+        return "emp";
+    }
 }
 

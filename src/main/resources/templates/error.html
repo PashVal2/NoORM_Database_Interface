@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <meta charset="UTF-8"> <!-- Убедитесь, что здесь установлена кодировка UTF-8 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/base.css">
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="icon" type="image/png" href="/icon/ic.png">
+    <title>Аренда недвижимости</title>
+</head>
+<body>
+<main>
+    <p>Похоже произошла ошибка.</p>
+    <div th:if="${error}">
+        <p th:text="${error}"></p>
+    </div>
+    <a href="/">Вернуться на главную</a>
+</main>
+</body>
+</html>

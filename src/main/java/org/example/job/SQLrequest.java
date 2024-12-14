@@ -164,10 +164,13 @@ public class SQLrequest {
                 .setParameter(1, employeeId)
                 .setParameter(2, "pending")
                 .setParameter(3, 0)
+                .setParameter(5, null)
                 .setParameter(4, address);
 
         // Если client_id не null, передаем его в запрос, иначе передаем null
-        insertOrderQuery.setParameter(5, clientId);
+        if (clientId != 0) {
+            insertOrderQuery.setParameter(5, clientId);
+        }
 
         insertOrderQuery.executeUpdate();
 
